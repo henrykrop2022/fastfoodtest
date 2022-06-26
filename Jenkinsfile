@@ -13,7 +13,12 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Hermann90/geolocation.git'
             }
         }
-        stage('Code Build') {
+        stage('Code Build Backend') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Code Build Frontend') {
             steps {
                 sh 'mvn clean package'
             }
