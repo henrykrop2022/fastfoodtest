@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Code Build Backend') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn -f ./fastfood_BackEnd/ clean package'
             }
         }
         stage('Code Build Frontend') {
