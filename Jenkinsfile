@@ -15,14 +15,14 @@ pipeline {
         }
         stage('Code Build Backend') {
             steps {
-                sh 'mvn -f ./fastfood_BackEnd/ clean package'
+                sh 'mvn -f ./fastfood_BackEnd/ clean package -DskipTests'
             }
         }
-        stage('Code Build Frontend') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
+        // stage('Code Build Frontend') {
+        //     steps {
+        //         sh 'mvn clean package'
+        //     }
+        // }
         // stage('Test') {
         //     steps {
         //         sh 'mvn test'
