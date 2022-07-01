@@ -19,24 +19,23 @@ pipeline {
                 echo 'Starting to build docker image'
                 dir('./fastfood_FrontEnd/'){
                 script {
-                    def customImage = docker.build("frontend:${env.BUILD_ID}")
+                    customImage = docker.build("frontend:${env.BUILD_ID}")
                     // customImage.push()
                 }
                }
            }
         }
-         stage('Build image BackEnd') {
+        stage('Build image BackEnd') {
             steps {
                 echo 'Starting to build docker image'
                 dir('./fastfood_BackEnd/'){
                 script {
-                    def customImage = docker.build("backend:${env.BUILD_ID}")
+                    customImage = docker.build("backend:${env.BUILD_ID}")
                     // customImage.push()
+                    }
                 }
             }
-        }
-
-    }     
+        }     
 
     }
 }
@@ -50,4 +49,4 @@ pipeline {
        
       
 
-       
+      
