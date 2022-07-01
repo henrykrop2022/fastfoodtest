@@ -16,11 +16,11 @@ pipeline {
         }
         stage('Code Build Backend') {
             steps {
-                sh 'mvn -f ./fastfood_BackEnd/ clean package -DskipTests'
+                sh 'mvn -f ./fastfood_Fr/ clean package -DskipTests'
             }
         }
         stage('Install') {
-            steps { sh 'npm install' }   
+            steps { sh 'npm  -f ./fastfood_FrontEnd/ install' }   
         }
         stage('Build') {
             steps { sh 'npm run-script build' }
