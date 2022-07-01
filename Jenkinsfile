@@ -22,9 +22,12 @@ pipeline {
         stage('Install') {
             //steps { sh 'npm  -f ./fastfood_FrontEnd/ install' } 
             //echo 'Building..'
-            sh 'npm install'
-           // echo 'Testing..'
-            sh 'npm test'  
+            steps{
+                sh 'npm install'
+                echo 'Testing..'
+                sh 'npm test' 
+            }
+            
         }
         stage('Build') {
             steps { sh 'npm run-script build' }
