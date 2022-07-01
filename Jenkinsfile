@@ -1,5 +1,5 @@
 pipeline {
-    agent docker { image 'node:latest' }
+    agent any
     
     tools{
         maven 'M2_HOME'
