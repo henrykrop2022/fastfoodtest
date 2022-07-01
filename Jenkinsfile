@@ -21,9 +21,9 @@ pipeline {
         }
         stage('Install') {
             //steps { sh 'npm  -f ./fastfood_FrontEnd/ install' } 
-            echo 'Building..'
+            //echo 'Building..'
             sh 'npm install'
-            echo 'Testing..'
+           // echo 'Testing..'
             sh 'npm test'  
         }
         stage('Build') {
