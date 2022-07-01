@@ -19,7 +19,7 @@ pipeline {
                 echo 'Starting to build docker image'
                 dir('./fastfood_FrontEnd/'){
                 script {
-                    customImage = docker.build("frontend:${env.BUILD_ID}")
+                    customImageFront = docker.build("frontend:${env.BUILD_ID}")
                     // customImage.push()
                 }
                }
@@ -30,7 +30,7 @@ pipeline {
                 echo 'Starting to build docker image'
                 dir('./fastfood_BackEnd/'){
                 script {
-                    customImage = docker.build("backend:${env.BUILD_ID}")
+                    customImageBack = docker.build("backend:${env.BUILD_ID}")
                     // customImage.push()
                     }
                 }
