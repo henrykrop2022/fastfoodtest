@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    agent{
+        any
+        docker { image 'node:latest' }
+    } 
     tools{
         maven 'M2_HOME'
     }
@@ -18,6 +21,14 @@ pipeline {
                 sh 'mvn -f ./fastfood_BackEnd/ clean package -DskipTests'
             }
         }
+        stage('Install') {
+            steps { sh 'npm install' }   
+        }
+        stage('Build') {
+            steps { sh 'npm run-script build' }
+            
+        }
+
         // stage('Code Build Frontend') {
         //     steps {
         //         sh 'mvn clean package'
