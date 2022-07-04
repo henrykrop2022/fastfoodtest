@@ -16,7 +16,7 @@ pipeline {
         }
          stage('Build image FrontEnd') {
             steps {
-                echo 'Starting to build docker image'
+                //echo 'Starting to build docker image'
                 dir('./fastfood_FrontEnd/'){
                 script {
                     def customImageFront = []
@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build image BackEnd') {
             steps {
-                echo 'Starting to build docker image'
+                //echo 'Starting to build docker image'
                 dir('./fastfood_BackEnd/'){
                 script {
                     def customImageBack = []
