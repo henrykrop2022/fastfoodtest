@@ -26,17 +26,17 @@ pipeline {
                }
            }
         }
-        stage('Build image BackEnd') {
-            steps {
-                //echo 'Starting to build docker image'
-                dir('./fastfood_BackEnd/'){
-                script {
-                    def customImageBack = []
-                    customImageBack = docker.build("backend:${env.BUILD_ID}")
-                    // customImage.push()
-                    }
-                }
-            }
-        }     
+        // stage('Build image BackEnd') {
+        //     steps {
+        //         //echo 'Starting to build docker image'
+        //         dir('./fastfood_BackEnd/'){
+        //         script {
+        //             def customImageBack = []
+        //             customImageBack = docker.build("backend:${env.BUILD_ID}")
+        //             // customImage.push()
+        //             }
+        //         }
+        //     }
+        // }     
     }
 }
