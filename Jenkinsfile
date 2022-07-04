@@ -20,7 +20,7 @@ pipeline {
                 dir('./fastfood_FrontEnd/'){
                 script {
                     def customImageFront = []
-                    customImageFront = docker.build("frontend:")
+                    customImageFront = docker.build("frontend:${BUILD_ID}")
                     // customImage.push()
                 }
                }
