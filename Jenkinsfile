@@ -21,7 +21,6 @@ pipeline {
                 script {
                     def customImageFront = []
                     customImageFront = docker.build("frontend:${BUILD_ID}")
-                    // customImage.push()
                 }
                }
            }
@@ -33,7 +32,6 @@ pipeline {
                 script {
                     def customImageBack = []
                     customImageBack = docker.build("backend:${env.BUILD_ID}")
-                    // customImage.push()
                     }
                 }
             }
