@@ -44,6 +44,26 @@ pipeline {
                     }
                 }
             }
-        }     
+        } 
+
+        // Uploading Docker images for the Backend into AWS ECR
+        stage('Pushing Backend to ECR') {
+            steps{
+                script {
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 076892551558.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker push 076892551558.dkr.ecr.us-east-1.amazonaws.com/food-backend:latest'
+                }
+            }
+        } 
+
+           // Uploading Docker images for the frontend into AWS ECR
+        stage('Pushing frontend to ECR') {
+            steps{
+                script {
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 076892551558.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker push 076892551558.dkr.ecr.us-east-1.amazonaws.com/food-frontend:latest'
+                }
+            }
+        }   
     }
 }
