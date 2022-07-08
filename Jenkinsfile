@@ -3,6 +3,13 @@ pipeline {
     tools{
         maven 'M2_HOME'
     }
+     environment {
+        backRegistry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/food-backend'
+        frontRegistry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/food-frontend'
+
+        dockerimage = '' 
+    }
+
     stages {
         stage('Checkout'){
             steps{
@@ -20,7 +27,9 @@ pipeline {
                 dir('./fastfood_FrontEnd/'){
                 script {
                     def customImageFront = []
-                    customImageFront = docker.build("frontend:${BUILD_ID}")
+                    customImageFront = docker.build("frontend:${BUILD_ID}") backRegistry
+                    //dockerImage = docker.build registry
+
                 }
                }
            }
@@ -31,7 +40,7 @@ pipeline {
                 dir('./fastfood_BackEnd/'){
                 script {
                     def customImageBack = []
-                    customImageBack = docker.build("backend:${env.BUILD_ID}")
+                    customImageBack = docker.build("backend:${env.BUILD_ID}") frontRegistry
                     }
                 }
             }
