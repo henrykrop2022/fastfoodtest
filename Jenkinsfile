@@ -27,7 +27,7 @@ pipeline {
                 dir('./fastfood_FrontEnd/'){
                 script {
                     def customImageFront = []
-                    customImageFront = docker.build("frontend:${BUILD_ID}") backRegistry
+                    customImageFront = docker.build frontRegistry
                     //dockerImage = docker.build registry
 
                 }
@@ -40,7 +40,7 @@ pipeline {
                 dir('./fastfood_BackEnd/'){
                 script {
                     def customImageBack = []
-                    customImageBack = docker.build("backend:${env.BUILD_ID}") frontRegistry
+                    customImageBack = docker.build backRegistry
                     }
                 }
             }
