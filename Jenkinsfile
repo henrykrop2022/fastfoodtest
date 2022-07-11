@@ -65,7 +65,7 @@ pipeline {
           stage('Deploy Database') {
               steps {
                     dir('./deploy/'){
-                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '') {
+                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
                         sh "kubectl apply -f postgres-credentials.yaml"
                         sh "kubectl apply -f postgres-configmap.yaml"
                         sh "kubectl apply -f postgres-deployment.yaml"
@@ -78,7 +78,7 @@ pipeline {
               steps {
                     echo 'Starting to build docker image'
                     dir('./deploy/'){
-                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '') {
+                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
                         sh "kubectl apply -f deployment.yaml"
                     }
                 }
