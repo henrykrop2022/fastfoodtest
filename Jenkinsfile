@@ -74,7 +74,7 @@ pipeline {
             } 
         } 
 
-        stage('Build image BackEnd') {
+        stage('deploy BackEnd to eks') {
               steps {
                     echo 'Starting to build docker image'
                     dir('./deploy/'){
