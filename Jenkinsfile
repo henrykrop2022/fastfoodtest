@@ -6,8 +6,6 @@ pipeline {
      environment {
         backRegistry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/food-backend'
         frontRegistry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/food-frontend'
-
-        dockerimage = '' 
     }
 
     stages {
@@ -28,8 +26,6 @@ pipeline {
                 script {
                     def customImageFront = []
                     customImageFront = docker.build frontRegistry
-                    //dockerImage = docker.build registry
-
                 }
                }
            }
@@ -64,6 +60,29 @@ pipeline {
                     sh 'docker push 076892551558.dkr.ecr.us-east-1.amazonaws.com/food-frontend:latest'
                 }
             }
+        }
+
+          stage('Deploy Database') {
+              steps {
+                    dir('./deploy/'){
+                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '') {
+                        sh "kubectl apply -f postgres-credentials.yaml"
+                        sh "kubectl apply -f postgres-configmap.yaml"
+                        sh "kubectl apply -f postgres-deployment.yaml"
+                    }
+                }
+            } 
+        } 
+
+        stage('Build image BackEnd') {
+              steps {
+                    echo 'Starting to build docker image'
+                    dir('./deploy/'){
+                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks_credential', namespace: '', serverUrl: '') {
+                        sh "kubectl apply -f deployment.yaml"
+                    }
+                }
+            } 
         }   
     }
 }
