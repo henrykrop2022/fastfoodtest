@@ -6,9 +6,10 @@ metadata:
   name: fast-food-backend-app
 spec:
   ports:
-    - name: fast-food-backend-app
-      port: 8080
+    - name: http
+      port: 80
       protocol: TCP
+      targetPort: 8082
   selector:
     app: fast-food-backend-app
   type: LoadBalancer
