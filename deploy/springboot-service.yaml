@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fast-food-backend-app
+  name: fast-food-backend-app
+spec:
+  ports:
+    - name: fast-food-backend-app
+      port: 8080
+      protocol: TCP
+  selector:
+    app: fast-food-backend-app
+  type: LoadBalancer
