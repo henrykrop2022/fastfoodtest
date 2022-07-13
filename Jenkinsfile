@@ -82,7 +82,7 @@ pipeline {
                     echo 'Starting to build docker image'
                     dir('./deploy/'){
                      withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
-                        sh "kubectl apply -f application.yaml"
+                        // sh "kubectl apply -f application.yaml"
                         sh "kubectl apply -f springboot-deployment-app.yaml"
                         sh "kubectl apply -f springboot-service.yaml"
                     }
