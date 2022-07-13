@@ -20,12 +20,12 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                 name: postgres-secrets
+                 name: postgres-credentials
                  key: postgres_user
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                 name: postgres-secrets
+                 name: postgres-credentials
                  key: postgres_password
           - name: POSTGRES_HOST
             valueFrom:
