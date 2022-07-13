@@ -1,3 +1,4 @@
+apiVersion: v1
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
