@@ -67,7 +67,7 @@ pipeline {
                     dir('./deploy/'){
                      withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
                         sh "kubectl apply -f postgres-credentials.yaml"
-                        // sh "kubectl apply -f postgres-configmap.yaml"
+                        sh "kubectl apply -f postgres-configmap.yaml"
                         // sh "kubectl apply -f postgres-deployment.yaml"
                         sh "kubectl apply -f postgres-storage.yaml"
                         sh "kubectl apply -f postgres-deployment-db.yaml"
