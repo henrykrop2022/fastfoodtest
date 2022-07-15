@@ -83,7 +83,7 @@ pipeline {
                     dir('./good-deploy/'){
                      withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
                         // sh "kubectl apply -f application.yaml"
-                        sh "kubectl apply -f application.yml --validate=false"
+                       // sh "kubectl apply -f application.yml --validate=false"
                         sh "kubectl apply -f deployment.yml"
                     }
                 }
