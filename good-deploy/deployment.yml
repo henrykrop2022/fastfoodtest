@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: springboot-postgres-k8s
-          image: springboot-postgres-k8s:1.0
+          image: 076892551558.dkr.ecr.us-east-1.amazonaws.com/food-backend:latest
           ports:
             - containerPort: 8080
           env:   # Setting Enviornmental Variables

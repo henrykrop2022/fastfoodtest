@@ -64,14 +64,14 @@ pipeline {
 
           stage('Deploy Database') {
               steps {
-                    dir('./deploy/'){
+                    dir('./good-deploy/'){
                      withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
-                        sh "kubectl apply -f postgres-credentials.yaml"
-                        sh "kubectl apply -f postgres-configmap.yaml"
+                        sh "kubectl apply -f postgres-credentials.yml"
+                        sh "kubectl apply -f postgres-configmap.yml"
                         // sh "kubectl apply -f postgres-deployment.yaml"
-                        sh "kubectl apply -f postgres-storage.yaml"
-                        sh "kubectl apply -f postgres-deployment-db.yaml"
-                        sh "kubectl apply -f postgres-service.yaml"
+                        sh "kubectl apply -f postgres-deployment.yml"
+                        // sh "kubectl apply -f postgres-deployment-db.yaml"
+                        // sh "kubectl apply -f postgres-service.yaml"
                     }
                 }
             } 
@@ -80,11 +80,11 @@ pipeline {
         stage('deploy BackEnd to eks') {
               steps {
                     echo 'Starting to build docker image'
-                    dir('./deploy/'){
+                    dir('./good-deploy/'){
                      withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
                         // sh "kubectl apply -f application.yaml"
-                        sh "kubectl apply -f springboot-deployment-app.yaml"
-                        sh "kubectl apply -f springboot-service.yaml"
+                        sh "kubectl apply -f application.yml"
+                        sh "kubectl apply -f deployment.yml"
                     }
                 }
             } 
