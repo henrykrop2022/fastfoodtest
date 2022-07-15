@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pv-claim # name of PVC essential for identifying the storage data
+  name: postgres-pvv-claim # name of PVC essential for identifying the storage data
   labels:
     app: postgres
     tier: database
@@ -82,5 +82,5 @@ spec:
       volumes:
         - name: postgres-persistance-storage
           persistentVolumeClaim:
-            claimName: postgres-pv-claim
+            claimName: v
 
