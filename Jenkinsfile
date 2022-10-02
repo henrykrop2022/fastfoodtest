@@ -1,93 +1,81 @@
+
 pipeline {
-    agent any
-    tools{
-        maven 'M2_HOME'
+    triggers {
+  pollSCM('* * * * *')
     }
-     environment {
-        backRegistry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/food-backend'
-        frontRegistry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/food-frontend'
-    }
+   agent any
+    tools {
+  maven 'M2_HOME'
+}
+environment {
+    registry = '076892551558.dkr.ecr.us-east-1.amazonaws.com/jenkins'
+    registryCredential = 'aws_ecr_id'
+    dockerimage = ''
+}
 
     stages {
-        stage('Checkout'){
-            steps{
-                git branch: 'main', url: 'https://github.com/Hermann90/fastfoodtest.git'
-            }
-        }
-         stage('Code Build Backend') {
+
+        stage("build & SonarQube analysis") {
+            agent {
+        docker { image 'maven:3.8.6-openjdk-11-slim' }
+   }
+            
+            
             steps {
-                sh 'mvn -f ./fastfood_BackEnd/ clean package -DskipTests'
-            }
-        }
-         stage('Build image FrontEnd') {
-            steps {
-                echo 'Starting to build docker image'
-                dir('./fastfood_FrontEnd/'){
-                script {
-                    def customImageFront = []
-                    customImageFront = docker.build frontRegistry
+                dir('./fastfood_Backend/'){
+                    withSonarQubeEnv('SonarServer') {
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=kserge2001_geolocation -Dsonar.java.binaries=.'
+                        }
                 }
-               }
-           }
-        }
-        stage('Build image BackEnd') {
+              
+            }
+          }
+        stage('Check Quality Gate') {
             steps {
-                echo 'Starting to build docker image'
-                dir('./fastfood_BackEnd/'){
-                script {
-                    def customImageBack = []
-                    customImageBack = docker.build backRegistry
+                echo 'Checking quality gate...'
+                dir('./fastfood_Backend/'){ 
+                    script {
+                    timeout(time: 20, unit: 'MINUTES') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline stopped because of quality gate status: ${qg.status}"
+                        }
+                    }
+                }
+                }
+                
+            }
+        }
+        
+         
+        stage('maven package') {
+            steps {
+                sh 'mvn clean'
+                sh 'mvn install -DskipTests'
+                sh 'mvn package -DskipTests'
+            }
+        }
+        stage('Build Image') {
+            
+            steps {
+                script{
+                  def mavenPom = readMavenPom file: 'pom.xml'
+                    dockerImage = docker.build registry + ":${mavenPom.version}"
+                } 
+            }
+        }
+        stage('Deploy image') {
+           
+            
+            steps{
+                script{ 
+                    docker.withRegistry("https://"+registry,"ecr:us-east-1:"+registryCredential) {
+                        dockerImage.push()
                     }
                 }
             }
-        } 
-
-        // Uploading Docker images for the Backend into AWS ECR
-        stage('Pushing Backend to ECR') {
-            steps{
-                script {
-                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 076892551558.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push 076892551558.dkr.ecr.us-east-1.amazonaws.com/food-backend:latest'
-                }
-            }
-        } 
-
-           // Uploading Docker images for the frontend into AWS ECR
-        stage('Pushing frontend to ECR') {
-            steps{
-                script {
-                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 076892551558.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push 076892551558.dkr.ecr.us-east-1.amazonaws.com/food-frontend:latest'
-                }
-            }
-        }
-
-          stage('Deploy Database') {
-              steps {
-                    dir('./good-deploy/'){
-                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
-                        sh "kubectl apply -f postgres-credentials.yml"
-                        sh "kubectl apply -f postgres-configmap.yml"
-                        // sh "kubectl apply -f postgres-deployment.yaml"
-                        sh "kubectl apply -f postgres-deployment.yml"
-                        // sh "kubectl apply -f postgres-deployment-db.yaml"
-                        // sh "kubectl apply -f postgres-service.yaml"
-                    }
-                }
-            } 
-        } 
-
-        stage('deploy BackEnd to eks') {
-              steps {
-                    echo 'Starting to build docker image'
-                    dir('./good-deploy/'){
-                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks-credentials', namespace: '', serverUrl: '') {
-                        // sh "kubectl apply -f application.yaml"
-                       // sh "kubectl apply -f application.yml --validate=false"
-                        sh "kubectl apply -f deployment.yml"
-                    }
-                }
-            } 
-        }   
+        }    
+         
+         
     }
 }
