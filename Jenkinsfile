@@ -24,7 +24,7 @@ environment {
             steps {
                 dir('./fastfood_Backend/'){
                     withSonarQubeEnv('SonarServer') {
-                        sh 'mvn sonar:sonar -Dsonar.projectKey=kserge2001_geolocation -Dsonar.java.binaries=.'
+                        sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Hermann90_fastfoodtest'
                         }
                 }
               
