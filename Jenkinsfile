@@ -22,7 +22,7 @@ pipeline {
             
             
             steps {
-                dir('./fastfood_Backend/'){
+                dir('./fastfood_BackEnd/'){
                     withSonarQubeEnv('SonarServer') {
                         sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Hermann90_fastfoodtest'
                         }
@@ -33,7 +33,7 @@ pipeline {
         stage('Check Quality Gate') {
             steps {
                 echo 'Checking quality gate...'
-                dir('./fastfood_Backend/'){ 
+                dir('./fastfood_BackEnd/'){ 
                     script {
                     timeout(time: 20, unit: 'MINUTES') {
                         def qg = waitForQualityGate()
