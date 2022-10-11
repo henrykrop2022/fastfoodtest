@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
+//@EnableEncryptableProperties
 public class FastfoodApplication implements CommandLineRunner {
 
 	@Autowired
