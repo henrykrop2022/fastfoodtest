@@ -12,7 +12,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "139.177.192.139:8081"
-        NEXUS_REPOSITORY = "maven-nexus-repo"
+        NEXUS_REPOSITORY = "utrains-nexus-pipeline"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
     }
 
@@ -57,7 +57,7 @@ pipeline {
 
          stage("Publish to Nexus Repository Manager") {
             steps {
-                echo 'Checking quality gate...'
+                echo 'Publish to Nexus Repository Manager...'
                 dir('./fastfood_BackEnd/'){
                     script {
                     pom = readMavenPom file: "pom.xml";
