@@ -112,16 +112,18 @@ pipeline {
         }
 
         // Push Docker images to Nexus Registry
-        // stage("Uploading to Nexus Registry"){
-        //     steps{http://
-        //         echo 'Uploading Docker image to Nexus ...'
-        //         dir('./fastfood_BackEnd/'){
-        //             script{
-                        
-        //             }
-        //         }
-        //     }
-        // }
+        stage("Uploading to Nexus Registry"){
+            steps{
+                echo 'Uploading Docker image to Nexus ...'
+                dir('./fastfood_BackEnd/'){
+                    script{
+                        docker.withRegistry( 'http://'+registry, registryCredentials ) {
+                        dockerImage.push('latest')
+                        }
+                    }
+                }
+            }
+        }
         
     }
 }
