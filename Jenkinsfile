@@ -17,7 +17,7 @@ pipeline {
 
         imageName = "fastfood"
         registryCredentials = "nexus-user-credentials"
-        registry = "139.177.192.139:8081/repository/utrains-nexus-registry/"
+        registry = "139.177.192.139:8085/repository/utrains-nexus-registry/"
         dockerImage = ''
     }
 
