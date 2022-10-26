@@ -14,6 +14,11 @@ pipeline {
         NEXUS_URL = "139.177.192.139:8081"
         NEXUS_REPOSITORY = "utrains-nexus-pipeline"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+
+        imageName = "fastfood"
+        registryCredentials = "nexus-user-credentials"
+        registry = "139.177.192.139:8081/repository/utrains-nexus-registry/"
+        dockerImage = ''
     }
 
     stages {
@@ -93,5 +98,30 @@ pipeline {
                 }
             }
         }
+        
+        // Building Docker images
+        stage("Build Docker Image"){
+            steps{
+                echo 'Build Docker Image'
+                dir('./fastfood_BackEnd/'){
+                    script{
+                        dockerImage = docker.build imageName
+                    }
+                }
+            }
+        }
+
+        // Push Docker images to Nexus Registry
+        // stage("Uploading to Nexus Registry"){
+        //     steps{http://
+        //         echo 'Uploading Docker image to Nexus ...'
+        //         dir('./fastfood_BackEnd/'){
+        //             script{
+                        
+        //             }
+        //         }
+        //     }
+        // }
+        
     }
 }
