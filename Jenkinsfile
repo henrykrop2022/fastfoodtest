@@ -124,8 +124,28 @@ pipeline {
                         pom = readMavenPom file: "pom.xml";
                         POM_VERSION = pom.version
                         docker.withRegistry( 'http://'+registry, registryCredentials ) {
+                        
+                        //Tag the Docker Image  with the version that is in the pom file.
+                        // This version is often changed before a new release. 
                         dockerImage.push("${POM_VERSION}")
                         }
+                    }
+                }
+            }
+        }
+
+        //Helm Chart push as tgz file
+        stage("pushing the helm charts to nexus"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'nexus-user-credentials', variable: '')]) {
+                          dir('fastfood_BackEnd/') {
+                             sh '''
+                                 helmversion=$( helm show chart helm_fastfood_back | grep version | cut -d: -f 2 | tr -d ' ')
+                                 tar -czvf  helm_fastfood_back-${helmversion}.tgz helm_fastfood_back/
+                                 curl -u admin:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file helm_fastfood_back-${helmversion}.tgz -v
+                            '''
+                          }
                     }
                 }
             }
