@@ -1,4 +1,3 @@
-
 pipeline {
     triggers {
   pollSCM('* * * * *')
@@ -19,6 +18,11 @@ pipeline {
         registryCredentials = "nexus-user-credentials"
         registry = "139.177.192.139:8085/repository/utrains-nexus-registry/"
         dockerImage = ''
+
+        //Declare the variable version
+        POM_VERSION = ''
+        BUILD_NUM = "${env.BUILD_ID}"
+
     }
 
     stages {
@@ -117,13 +121,14 @@ pipeline {
                 echo 'Uploading Docker image to Nexus ...'
                 dir('./fastfood_BackEnd/'){
                     script{
+                        pom = readMavenPom file: "pom.xml";
+                        POM_VERSION = pom.version,
                         docker.withRegistry( 'http://'+registry, registryCredentials ) {
-                        dockerImage.push('latest')
+                        dockerImage.push('${POM_VERSION}')
                         }
                     }
                 }
             }
-        }
-        
+        }   
     }
 }
