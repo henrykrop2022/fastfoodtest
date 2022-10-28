@@ -143,7 +143,7 @@ pipeline {
                              sh '''
                                  helmversion=$( helm show chart helm_fastfood_back | grep version | cut -d: -f 2 | tr -d ' ')
                                  tar -czvf  helm_fastfood_back-${helmversion}.tgz helm_fastfood_back/
-                                 curl -u admin:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file helm_fastfood_back-${helmversion}.tgz -v
+                                 curl -u jenkins-user:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file helm_fastfood_back-${helmversion}.tgz -v
                             '''
                           }
                     }
