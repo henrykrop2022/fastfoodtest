@@ -122,7 +122,7 @@ pipeline {
                 dir('./fastfood_BackEnd/'){
                     script{
                         pom = readMavenPom file: "pom.xml";
-                        POM_VERSION = pom.version,
+                        POM_VERSION = pom.version
                         docker.withRegistry( 'http://'+registry, registryCredentials ) {
                         dockerImage.push('${POM_VERSION}')
                         }
