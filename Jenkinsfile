@@ -124,7 +124,7 @@ pipeline {
                         pom = readMavenPom file: "pom.xml";
                         POM_VERSION = pom.version
                         docker.withRegistry( 'http://'+registry, registryCredentials ) {
-                        dockerImage.push('POM_VERSION')
+                        dockerImage.push("${POM_VERSION}")
                         }
                     }
                 }
