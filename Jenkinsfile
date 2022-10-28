@@ -138,7 +138,7 @@ pipeline {
         stage("pushing the helm charts to nexus"){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'nexus-user-credentials', variable: '')]) {
+                    withCredentials([string(credentialsId: 'nexus-user-credentials', variable: 'docker_password')]) {
                           dir('fastfood_BackEnd/') {
                              sh '''
                                  helmversion=$( helm show chart helm_fastfood_back | grep version | cut -d: -f 2 | tr -d ' ')
