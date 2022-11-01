@@ -146,6 +146,7 @@ the steps of the node installation are the following:
 ```bash
     cd utrains_fastfood_repo/fastfood/fastfood_FrontEnd
     npm install -g @angular/cli@10.0.5
+    npm audit fix
     npm install --force
 ```
 
