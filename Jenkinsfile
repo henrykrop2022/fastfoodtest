@@ -29,7 +29,7 @@ pipeline {
 
         stage("build & SonarQube analysis") {          
             steps {
-                dir('./fastfood_BackEnd/'){
+                dir('./fastfood_backend/'){
                     withSonarQubeEnv('SonarServer') {
                         sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Hermann90_fastfoodtest'
                     }
@@ -40,7 +40,7 @@ pipeline {
         stage('Check Quality Gate') {
             steps {
                 echo 'Checking quality gate...'
-                dir('./fastfood_BackEnd/'){ 
+                dir('./fastfood_backend/'){ 
                     script {
                     timeout(time: 20, unit: 'MINUTES') {
                         def qg = waitForQualityGate()
@@ -56,7 +56,7 @@ pipeline {
          stage("Maven Build Back-End") {
             steps {
                 echo 'Build Back-End Project...'
-                dir('./fastfood_BackEnd/'){
+                dir('./fastfood_backend/'){
                     script {
                     sh "mvn package -DskipTests=true"
                     }
@@ -67,7 +67,7 @@ pipeline {
          stage("Publish to Nexus Repository Manager") {
             steps {
                 echo 'Publish to Nexus Repository Manager...'
-                dir('./fastfood_BackEnd/'){
+                dir('./fastfood_backend/'){
                     script {
                     pom = readMavenPom file: "pom.xml";
                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
@@ -107,7 +107,7 @@ pipeline {
         stage("Build Docker Image"){
             steps{
                 echo 'Build Docker Image'
-                dir('./fastfood_BackEnd/'){
+                dir('./fastfood_backend/'){
                     script{
                         dockerImage = docker.build imageName
                     }
@@ -119,7 +119,7 @@ pipeline {
         stage("Uploading to Nexus Registry"){
             steps{
                 echo 'Uploading Docker image to Nexus ...'
-                dir('./fastfood_BackEnd/'){
+                dir('./fastfood_backend/'){
                     script{
                         pom = readMavenPom file: "pom.xml";
                         POM_VERSION = pom.version
@@ -139,7 +139,7 @@ pipeline {
             steps{
                 script{
                     withCredentials([string(credentialsId: 'nexus-pass', variable: 'docker_password')]) {
-                          dir('fastfood_BackEnd/') {
+                          dir('fastfood_backend/') {
                              sh '''
                                  helmversion=$( helm show chart helm_fastfood_back | grep version | cut -d: -f 2 | tr -d ' ')
                                  tar -czvf  helm_fastfood_back-${helmversion}.tgz helm_fastfood_back/
