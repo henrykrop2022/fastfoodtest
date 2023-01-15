@@ -19,7 +19,7 @@ public class Category
 
     @Id
     @Column(name="CATEGORYID")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int categoryId;
 
     @NotEmpty(message="category Name should not be empty")

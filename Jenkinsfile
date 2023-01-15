@@ -31,7 +31,7 @@ pipeline {
             steps {
                 dir('./fastfood_backend/'){
                     withSonarQubeEnv('SonarServer') {
-                        sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Hermann90_fastfoodtest'
+                        sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Hermann90_hfastfood -DskipTests=true'
                     }
                 }
             }
@@ -58,7 +58,7 @@ pipeline {
                 echo 'Build Back-End Project...'
                 dir('./fastfood_backend/'){
                     script {
-                    sh "mvn package -DskipTests=true"
+                    sh "mvn package -DskipTests=true -Dspring.profiles.active=test"
                     }
                 }
             }
@@ -134,21 +134,20 @@ pipeline {
             }
         }
 
-        //Helm Chart push as tgz file
-        stage("pushing the helm charts to nexus"){
+        //Project Helm Chart push as tgz file
+        stage("pushing the Backend helm charts to nexus"){
             steps{
                 script{
                     withCredentials([string(credentialsId: 'nexus-pass', variable: 'docker_password')]) {
-                          dir('fastfood_backend/') {
-                             sh '''
-                                 helmversion=$( helm show chart helm_fastfood_back | grep version | cut -d: -f 2 | tr -d ' ')
-                                 tar -czvf  helm_fastfood_back-${helmversion}.tgz helm_fastfood_back/
-                                 curl -u jenkins-user:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file helm_fastfood_back-${helmversion}.tgz -v
-                            '''
-                          }
+                       
+                        sh '''
+                            helmversion=$( helm show chart fastfoodapp | grep version | cut -d: -f 2 | tr -d ' ')
+                            tar -czvf  fastfoodapp-${helmversion}.tgz fastfoodapp/
+                            curl -u jenkins-user:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file fastfoodapp-${helmversion}.tgz -v
+                        '''
                     }
                 }
             }
-        }   
+        }     
     }
 }

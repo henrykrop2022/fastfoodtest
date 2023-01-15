@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CarryBoxRepository extends JpaRepository<CarryBox, Integer> {
 
-    @Query("select count(carryBox) from CarryBox carryBox")
+    @Query("select count(boxId) from CarryBox")
     public Long getCarryBoxCount();
 
-    @Query("select max(carryBox.boxId) from CarryBox carryBox")
-    public int getMaxBoxId();
+    @Query("select max(boxId) from CarryBox")
+    public Long getMaxBoxId();
+    public CarryBox findByBoxId(int boxId);
 
 }

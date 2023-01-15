@@ -17,7 +17,7 @@ public class CarryBox{
 
     @Id
     @Column(name="BOXID")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int boxId;
 
 
@@ -88,9 +88,13 @@ public class CarryBox{
         this.getItemlist().remove(item);
     }
 
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "CarryBox{" +
+                "boxId=" + boxId +
+                ", totalCost=" + totalCost +
+                ", itemlist=" + itemlist +
+                ", customer=" + customer +
+                '}';
+    }
 }

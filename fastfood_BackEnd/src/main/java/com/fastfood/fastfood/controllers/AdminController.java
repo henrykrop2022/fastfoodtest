@@ -27,8 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@CrossOrigin(origins="http://localhost:4200")
-//@CrossOrigin
+@CrossOrigin
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -44,8 +43,8 @@ public class AdminController {
 	EntityManager entityManager;
 	
 	/**
-	 * Method Description : Get all the user details by taking user name
-	 * @param username    : user name of the user
+	 * Method Description : Get all the user details by taking username
+	 * @param username    : username of the user
 	 * @return
 	 */
 	@GetMapping("/getUser/{username}")

@@ -1,0 +1,110 @@
+# # apiVersion: apps/v1
+# # kind: Deployment
+# metadata:
+#   # annotations:
+#   #   kompose.cmd: C:\Users\hermann90\projects\final_full\test_kompose\kompose.exe convert
+#   #   kompose.version: 1.26.0 (40646f47)
+#   # labels:
+#   #   io.kompose.service: backend-cip-service
+#   # name: backend-cip-service
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       io.kompose.service: backend-cip-service
+#   strategy: {}
+#   template:
+#     metadata:
+#       annotations:
+#         kompose.cmd: C:\Users\hermann90\projects\final_full\test_kompose\kompose.exe convert
+#         kompose.version: 1.26.0 (40646f47)
+#       labels:
+#         io.kompose.network/back-tier: "true"
+#         io.kompose.network/db-tier: "true"
+#         io.kompose.service: backend-cip-service
+#     spec:
+#       containers:
+#         - env:
+#             - name: MYSQL_DATABASE
+#               value: userauth
+#             - name: MYSQL_HOST
+#               value: db
+#             - name: MYSQL_PASSWORD
+#               value: lWZRv2D2SEX32Y5RgdC5J
+#             - name: MYSQL_USER
+#               value: admin
+#           image: hermann90/backfood:v2
+#           name: backend-cip-service
+#           ports:
+#             - name: http
+#               containerPort: 8080
+#             # - containerPort: 8080
+#           resources: {}
+#       restartPolicy: Always
+# status: {}
+
+# //////////////
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: backend
+        track: stable  
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: userauth
+            - name: MYSQL_HOST
+              value: db
+            - name: MYSQL_PASSWORD
+              value: lWZRv2D2SEX32Y5RgdC5J
+            - name: MYSQL_USER
+              value: admin
+          image: hermann90/backfood:v2
+          name: hello
+          ports:
+            - name: http
+              containerPort: 80
+      restartPolicy: Always
+...
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: backend
+# spec:
+#   selector:
+#     matchLabels:
+#       app: hello
+#       tier: backend
+#       track: stable
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: hello
+#         tier: backend
+#         track: stable
+#     spec:
+#       containers:
+#         - name: hello
+#           image: "<image path>"
+#           imagePullPolicy: Always
+#           ports:
+#             - name: http
+#               containerPort: 80
+# ...

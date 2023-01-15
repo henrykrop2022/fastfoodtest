@@ -9,6 +9,7 @@ import java.time.LocalTime;
 public class Order {
     @Id
     @Column(name="ORDERID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderId;
 
     @Column(name="quantity")

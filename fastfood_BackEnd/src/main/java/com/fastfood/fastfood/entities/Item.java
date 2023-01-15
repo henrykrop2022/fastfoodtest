@@ -19,7 +19,7 @@ public class Item  {
 
     @Id
     @Column(name="ITEMID")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int itemId;
 
     @Length(max=25)

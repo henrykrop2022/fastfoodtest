@@ -1,16 +1,99 @@
-version: '3'
+# version: '3.3'
+# services:
+#   fastfood_frontend:
+#     build: ./fastfood_frontend
+#     container_name: fastfood_frontend
+#     ports:
+#       - 4200:4200
+#     networks:
+#       - front-tier
+#       - back-tier
+#       # - db-tier
+#   db:
+#     image: mysql:5.7
+#     container_name: db
+#     environment:
+#       MYSQL_ROOT_PASSWORD: lWZRv2D2SEX32Y5RgdC5J
+#       MYSQL_DATABASE: userauth
+#       MYSQL_USER: admin
+#       MYSQL_PASSWORD: lWZRv2D2SEX32Y5RgdC5J
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - dbdata:/var/lib/mysql
+#     healthcheck:
+#            test: ["CMD","mysqladmin","ping","-h","localhost"]
+#            timeout: 20s
+#            retries: 5
+#     # restart: always
+
+#   fastfood_backend:
+#     build: ./fastfood_backend
+#     container_name: fastfood_backend
+#     # environment:
+#     #   MYSQL_HOST: db
+#     #   MYSQL_USER: admin
+#     #   MYSQL_PASSWORD: lWZRv2D2SEX32Y5RgdC5J
+#     #   MYSQL_DATABASE: userauth
+#     ports:
+#       - 8094:8094
+#     networks:
+#       - back-tier
+#       - db-tier
+#     # restart: always
+# networks:
+#   # The presence of these objects is sufficient to define them
+#   front-tier: {}
+#   back-tier: {}
+#   db-tier: {}
+
+# volumes:
+#   dbdata:
+version: '3.3'
 services:
-  fastfood_backend:
-    build: ./fastfood_backend
-    container_name: fastfood_backend
-    ports:
-      - 8094:8094
-
-
   fastfood_frontend:
-    build: ./fastfood_frontend
+    image: hermann90/frontfood:v1
     container_name: fastfood_frontend
     ports:
-      - 4200:4200
-    links:
-      - fastfood_backend
+      - 80:80
+    networks:
+      - front-tier
+      - back-tier
+      - db-tier
+
+  db:
+    image: 'mysql/mysql-server:5.7'
+    ports:
+           - "3306:3306"
+    environment:
+           - MYSQL_ROOT_PASSWORD=lWZRv2D2SEX32Y5RgdC5J
+           - MYSQL_DATABASE=userauth
+           - MYSQL_USER=admin
+           - MYSQL_PASSWORD=lWZRv2D2SEX32Y5RgdC5J
+           - MYSQL_ROOT_HOST=%
+    volumes:
+           - ./my-datavolume:/var/lib/mysql
+    # healthcheck:
+    #        test: ["CMD","mysqladmin","ping","-h","localhost"]
+    #        timeout: 20s
+    #        retries: 10
+    # restart: always
+
+  fastfood_backend:
+    image: hermann90/backfood:v1
+    container_name: fastfood_backend
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: lWZRv2D2SEX32Y5RgdC5J
+      MYSQL_DATABASE: userauth
+    ports:
+      - 8094:8094
+    networks:
+      - back-tier
+      - db-tier
+networks:
+  # The presence of these objects is sufficient to define them
+  front-tier: {}
+  back-tier: {}
+  db-tier: {}

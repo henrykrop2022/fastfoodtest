@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\hermann90\projects\final_full\test_kompose\kompose.exe convert
+    kompose.version: 1.26.0 (40646f47)
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\hermann90\projects\final_full\test_kompose\kompose.exe convert
+        kompose.version: 1.26.0 (40646f47)
+      labels:
+        io.kompose.service: db
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: userauth
+            - name: MYSQL_PASSWORD
+              value: lWZRv2D2SEX32Y5RgdC5J
+            - name: MYSQL_ROOT_HOST
+              value: '%'
+            - name: MYSQL_ROOT_PASSWORD
+              value: lWZRv2D2SEX32Y5RgdC5J
+            - name: MYSQL_USER
+              value: admin
+          image: mysql:5.6
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+            failureThreshold: 10
+            timeoutSeconds: 20
+          name: db
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: db-claim0
+      restartPolicy: Always
+      volumes:
+        - name: db-claim0
+          persistentVolumeClaim:
+            claimName: db-claim0
+status: {}

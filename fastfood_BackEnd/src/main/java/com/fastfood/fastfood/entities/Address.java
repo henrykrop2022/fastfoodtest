@@ -13,7 +13,7 @@ import java.util.List;
 public class Address {
     @Id
     @Column(name="ADDRESSID")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int addressId;
 
     @Column(name="NAME")

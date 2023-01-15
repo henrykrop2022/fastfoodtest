@@ -17,7 +17,7 @@ public class Branch {
 
     @Id
     @Column(name="BRANCHID")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int branchId;
 
     @NotEmpty(message=" Branch Name should not be empty")

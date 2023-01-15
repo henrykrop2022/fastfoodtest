@@ -17,13 +17,11 @@ public class User {
 
     @Id
     @Column(name="USERID")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
 
     //    @Id
     @Length(max=30)
     @Column(name="EMAILID")
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private String emailId;
 
     @NotEmpty(message="customer name should not be empty")
