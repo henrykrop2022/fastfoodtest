@@ -10,8 +10,8 @@ pipeline {
    environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "139.177.192.139:8081"
-        NEXUS_REPOSITORY = "utrains-nexus-pipeline"
+        NEXUS_URL = "http://192.168.78.112:8081"
+        NEXUS_REPOSITORY = "utrains-nexus-registry"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
 
         imageName = "fastfood"
@@ -134,20 +134,20 @@ pipeline {
             }
         }
 
-        //Project Helm Chart push as tgz file
-        stage("pushing the Backend helm charts to nexus"){
-            steps{
-                script{
-                    withCredentials([string(credentialsId: 'nexus-pass', variable: 'docker_password')]) {
+        //  //Project Helm Chart push as tgz file
+        //  stage("pushing the Backend helm charts to nexus"){
+        //      steps{
+        //          script{
+        //              withCredentials([string(credentialsId: 'nexus-pass', variable: 'docker_password')]) {
                        
-                        sh '''
-                            helmversion=$( helm show chart fastfoodapp | grep version | cut -d: -f 2 | tr -d ' ')
-                            tar -czvf  fastfoodapp-${helmversion}.tgz fastfoodapp/
-                            curl -u jenkins-user:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file fastfoodapp-${helmversion}.tgz -v
-                        '''
-                    }
-                }
-            }
-        }     
+        //                  sh '''
+        //                      helmversion=$( helm show chart fastfoodapp | grep version | cut -d: -f 2 | tr -d ' ')
+        //                     tar -czvf  fastfoodapp-${helmversion}.tgz fastfoodapp/
+        //                      curl -u jenkins-user:$docker_password http://139.177.192.139:8081/repository/fastfood-helm-rep/ --upload-file fastfoodapp-${helmversion}.tgz -v
+        //                 '''
+        //              }
+        //          }
+        //      }
+        //  }     
     }
 }
